@@ -1,0 +1,24 @@
+{
+  "name": "WSTodayCardV3_GAS",
+  "version": "1.0.0",
+  "description": "TypeScript + clasp を用いて   [ヴァイスシュヴァルツ 今日のカードお知らせSlack Bot Ver.2](https://github.com/coffeeMoka/WSTodayCardV2)  を更新、バージョンアップさせる。   自宅PCの Node.js からGASへデータ送り、Slack と Discord に通知を投げる。   こちらはGAS版。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coffeeMoka/WSTodayCardV3_GAS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/coffeeMoka/WSTodayCardV3_GAS/issues"
+  },
+  "homepage": "https://github.com/coffeeMoka/WSTodayCardV3_GAS#readme",
+  "devDependencies": {
+    "@types/google-apps-script": "^1.0.14",
+    "typescript": "^3.8.3"
+  }
+}
