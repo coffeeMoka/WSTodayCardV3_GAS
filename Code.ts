@@ -1,18 +1,26 @@
 const wsURL: string = "https://ws-tcg.com/todays-card/";
 const wsFolder: GoogleAppsScript.Drive.Folder = DriveApp.getFolderById("フォルダID");
-const SLACKMESSAGE: string = "https://hooks.slack.com/services/Slackのエンドポイント";
-const SLACKTOKEN: string = "Slackのトークン";
-const POSTCHANNEL: string = "Slackのチャンネル";
-const SLACKIMAGE: string = "https://slack.com/api/files.upload";
-const DISCORDENDPOINT: string = "https://discordapp.com/api/webhooks/discordの鯖";
+const SLACKMESSAGE: string = "https://hooks.slack.com/services/slackのメッセージ投稿先";
+const SLACKTOKEN: string = "slackのトークン";
+const POSTCHANNEL: string = "slackの投稿するチャンネル";
+const SLACKIMAGE: string = "slackのファイルアップロード先";
+const DISCORDENDPOINT: string = "https://discordapp.com/api/webhooks/送信先/";
 const DISCORDTOKEN: string = "discordのトークン";
-const DISCORDCHANNEL: string = "discordのチャンネル";
-const DISCORDUSERNAME: string = "discordのbot名";
+const DISCORDCHANNEL: string = "#today-cards";
+const DISCORDUSERNAME: string = "Today Bot";
 const DISCORDPARSE: string = "full";
 
 function doPost(e) {
-    const jsonString: string = e.postData.getDataAsString();
+    const today = new Date();
+    if(DateUtil.IsHoliday(today)) {
+        return;
+    }
+    const jsonString: string = e.postData.contents;
     postTodayCards(jsonString);
+    const output = ContentService.createTextOutput();
+    output.setMimeType(ContentService.MimeType.JSON);
+    output.setContent(JSON.stringify({ message: "success!" }));
+    return output;
 }
 
 function postTodayCards(json: string): void {
@@ -28,7 +36,7 @@ function postTodayCards(json: string): void {
     const todayFolder: GoogleAppsScript.Drive.Folder = wsFolder.createFolder(today);
     for (let i: number = 0; i < imageList.length; i++) {
         const imagePath: string = imageList[i];
-        const cardUrl: string = "https://ws-tcg.com" + imagePath;
+        const cardUrl: string = imagePath;
         const image: GoogleAppsScript.Base.Blob = getImage(cardUrl);
         postSlackImage(image);
         postDiscordImage(image);
@@ -206,7 +214,7 @@ function test(): void {
 }
 
 class DateUtil {
-    public static IsisHoliday(today: Date): boolean {
+    public static IsHoliday(today: Date): boolean {
         const day: number = today.getDay();
         if (day === 0 || day === 6) {
             return true;
